@@ -18,7 +18,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <camel.version>2.10.3</camel.version>
+        <camel.version>2.12.3</camel.version>
         <slf4j.version>1.7.5</slf4j.version>
         <spring.version>3.2.5.RELEASE</spring.version>
     </properties>
@@ -31,6 +31,12 @@
             <artifactId>camel-core</artifactId>
             <version>${camel.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-cxf</artifactId>
+            <version>${camel.version}</version>
+        </dependency>
+        
         <dependency>
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-spring</artifactId>
@@ -72,7 +78,7 @@
 
     <build>
         <defaultGoal>install</defaultGoal>
-
+        <finalName>camel-cxfrs</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
