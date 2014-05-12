@@ -74,6 +74,13 @@
             <version>${camel.version}</version>
             <scope>test</scope>
         </dependency>
+        
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-transports-http-jetty</artifactId>
+            <version>2.7.10</version>
+        </dependency>
+            
     </dependencies>
 
     <build>
@@ -102,21 +109,21 @@
             <plugin>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
-                <version>9.1.5.v2014050</version>
-            <configuration>
-                <webAppConfig>
-                    <contextPath>/</contextPath>
-                </webAppConfig>
-                <systemProperties>
-                    <!-- enable easy JMX connection to JConsole -->
-                    <systemProperty>
-                        <name>com.sun.management.jmxremote</name>
-                        <value/>
-                    </systemProperty>
-                </systemProperties>
-                <scanIntervalSeconds>10</scanIntervalSeconds>
-            </configuration>
-        </plugin>
+                <version>9.1.2.v20140210</version>
+                <configuration>
+                    <webAppConfig>
+                        <contextPath>/</contextPath>
+                    </webAppConfig>
+                    <systemProperties>
+                        <!-- enable easy JMX connection to JConsole -->
+                        <systemProperty>
+                            <name>com.sun.management.jmxremote</name>
+                            <value/>
+                        </systemProperty>
+                    </systemProperties>
+                    <scanIntervalSeconds>10</scanIntervalSeconds>
+                </configuration>
+            </plugin>
 
         </plugins>
     </build>
