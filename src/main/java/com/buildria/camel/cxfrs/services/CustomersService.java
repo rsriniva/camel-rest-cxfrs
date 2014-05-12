@@ -8,12 +8,12 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
 /**
- * CustomeService
+ * CustomersService
  *
  * @author sogabe
  */
 @Path("/cs/")
-public class CustomService {
+public class CustomersService {
 
     @GET
     @Path("/customers/")
@@ -23,7 +23,7 @@ public class CustomService {
     }
 
     @GET
-    @Path("/customers/{id}")
+    @Path("/customer/{id}")
     public Customer getCustomer(@PathParam("id") int id) {
         return null;
     }
