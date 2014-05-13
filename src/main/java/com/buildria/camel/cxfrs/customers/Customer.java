@@ -12,7 +12,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "customer")
 public class Customer {
 
-    private int id;
+    private long id;
 
     private String name;
 
@@ -21,18 +21,18 @@ public class Customer {
     public Customer() {
     }
 
-    public Customer(int id, String name, String address) {
+    public Customer(long id, String name, String address) {
         this.id = id;
         this.name = name;
         this.address = address;
     }
     
     @XmlAttribute(name = "id")
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

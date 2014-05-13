@@ -31,6 +31,10 @@
             <log message="HEADERS: ${headers}" />
             <choice>
                 <when>
+                    <simple>$simple{headers.operationName} == 'getCustomer'</simple>
+                    <process ref="cutomerProcessor" />
+                </when>
+                <when>
                     <simple>$simple{headers.operationName} == 'getCustomers'</simple>
                     <process ref="cutomersProcessor" />
                 </when>
@@ -41,6 +45,7 @@
         </route>
     </camelContext>
     
+    <bean id="cutomerProcessor" class="com.buildria.camel.cxfrs.customers.CustomerProcessor" />
     <bean id="cutomersProcessor" class="com.buildria.camel.cxfrs.customers.CustomersProcessor" />
 
     <bean id="jacksonProvider" class="org.codehaus.jackson.jaxrs.JacksonJsonProvider" />
