@@ -20,7 +20,7 @@
     
     <camelContext xmlns="http://camel.apache.org/schema/spring">
         <route>
-            <from uri="cxfrs://bean://rsServer?bindingStyle=SimpleConsumer" />
+            <from uri="cxfrs://bean://rsServer?bindingStyle=SimpleConsumer&amp;providers=#providers" />
             <!--<from uri="cxfrs://bean://rsServer" />-->
             <log message="BODY: ${body}" />
             <log message="HEADERS: ${headers}" />
@@ -38,4 +38,11 @@
     
     <bean id="cutomersProcessor" class="com.buildria.camel.cxfrs.customers.CustomersProcessor" />
 
+    <bean id="providers" class="java.util.ArrayList">
+        <constructor-arg>
+            <list>
+                <bean class="org.codehaus.jackson.jaxrs.JacksonJsonProvider" />
+            </list>
+        </constructor-arg>
+    </bean>
 </beans>

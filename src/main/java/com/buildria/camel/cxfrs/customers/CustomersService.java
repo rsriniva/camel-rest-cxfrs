@@ -15,7 +15,7 @@ public class CustomersService {
 
     @GET
     @Path("/customers/")
-    @Produces("application/xml")
+    @Produces({"application/json", "application/xml"})
     public Customers getCustomers() {
         return null;
     }
