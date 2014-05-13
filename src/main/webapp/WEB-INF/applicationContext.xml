@@ -12,8 +12,8 @@
 
     <cxf:rsServer id="rsServer" 
                   address="http://localhost:9999/cxfrs"
-                  serviceClass="com.buildria.camel.cxfrs.services.CustomersService" 
-                  loggingFeatureEnabled="true" 
+                  serviceClass="com.buildria.camel.cxfrs.customers.CustomersService" 
+                  loggingFeatureEnabled="false" 
                   loggingSizeLimit="200" 
                   skipFaultLogging="true"
     />
@@ -21,12 +21,13 @@
     <camelContext xmlns="http://camel.apache.org/schema/spring">
         <route>
             <from uri="cxfrs://bean://rsServer?bindingStyle=SimpleConsumer" />
-            <log message="BODY ${body}" />
-            <log message="HEADERS ${headers}" />
+            <!--<from uri="cxfrs://bean://rsServer" />-->
+            <log message="BODY: ${body}" />
+            <log message="HEADERS: ${headers}" />
             <process ref="cutomersProcessor" />
         </route>
     </camelContext>
     
-    <bean id="cutomersProcessor" class="com.buildria.camel.cxfrs.processors.CustomersProcessor" />
+    <bean id="cutomersProcessor" class="com.buildria.camel.cxfrs.customers.CustomersProcessor" />
 
 </beans>

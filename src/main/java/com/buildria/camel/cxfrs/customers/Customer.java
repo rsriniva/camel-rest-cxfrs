@@ -1,4 +1,4 @@
-package com.buildria.camel.cxfrs.models;
+package com.buildria.camel.cxfrs.customers;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;

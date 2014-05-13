@@ -1,7 +1,5 @@
-package com.buildria.camel.cxfrs.services;
+package com.buildria.camel.cxfrs.customers;
 
-import com.buildria.camel.cxfrs.models.Customer;
-import com.buildria.camel.cxfrs.models.Customers;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;

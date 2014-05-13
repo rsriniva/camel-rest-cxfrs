@@ -1,7 +1,5 @@
-package com.buildria.camel.cxfrs.processors;
+package com.buildria.camel.cxfrs.customers;
 
-import com.buildria.camel.cxfrs.models.Customer;
-import com.buildria.camel.cxfrs.models.Customers;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.camel.Exchange;
