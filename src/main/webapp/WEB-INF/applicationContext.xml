@@ -24,7 +24,15 @@
             <!--<from uri="cxfrs://bean://rsServer" />-->
             <log message="BODY: ${body}" />
             <log message="HEADERS: ${headers}" />
-            <process ref="cutomersProcessor" />
+            <choice>
+                <when>
+                    <simple>$simple{headers.operationName} == 'getCustomers'</simple>
+                    <process ref="cutomersProcessor" />
+                </when>
+                <otherwise>
+                    <log message="No suitable process for $simple{headers.operationName}" />
+                </otherwise>
+            </choice>
         </route>
     </camelContext>
     
