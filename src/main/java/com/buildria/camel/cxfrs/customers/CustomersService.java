@@ -22,7 +22,7 @@ public class CustomersService {
 
     @GET
     @Path("/customer/{id}")
-    public Customer getCustomer(@PathParam("id") int id) {
+    public Customer getCustomer(@PathParam("id") long id) {
         return null;
     }
 }
