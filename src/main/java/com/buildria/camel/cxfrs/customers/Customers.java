@@ -2,7 +2,6 @@ package com.buildria.camel.cxfrs.customers;
 
 import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -10,12 +9,11 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  * @author sogabe
  */
-@XmlRootElement(name = "root")
+@XmlRootElement(name = "customers")
 public class Customers {
 
     private List<Customer> customers;
 
-    @XmlElementWrapper(name = "customers")
     @XmlElement(name = "customer")
     public List<Customer> getCustomers() {
         return customers;
