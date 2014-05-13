@@ -16,11 +16,16 @@
                   loggingFeatureEnabled="false" 
                   loggingSizeLimit="200" 
                   skipFaultLogging="true"
-    />
+    >
+        <cxf:providers>
+            <!--<ref bean="jacksonProvider" />-->
+            <ref bean="jettisonProvider" />
+        </cxf:providers>
+    </cxf:rsServer>
     
     <camelContext xmlns="http://camel.apache.org/schema/spring">
         <route>
-            <from uri="cxfrs://bean://rsServer?bindingStyle=SimpleConsumer&amp;providers=#providers" />
+            <from uri="cxfrs://bean://rsServer?bindingStyle=SimpleConsumer" />
             <!--<from uri="cxfrs://bean://rsServer" />-->
             <log message="BODY: ${body}" />
             <log message="HEADERS: ${headers}" />
@@ -38,11 +43,14 @@
     
     <bean id="cutomersProcessor" class="com.buildria.camel.cxfrs.customers.CustomersProcessor" />
 
+    <bean id="jacksonProvider" class="org.codehaus.jackson.jaxrs.JacksonJsonProvider" />
+    <bean id="jettisonProvider" class="org.apache.cxf.jaxrs.provider.json.JSONProvider" />
+    
     <bean id="providers" class="java.util.ArrayList">
         <constructor-arg>
             <list>
-                <bean class="org.codehaus.jackson.jaxrs.JacksonJsonProvider" />
-                <!--<bean class="org.apache.cxf.jaxrs.provider.json.JSONProvider" />-->
+                <ref bean="jacksonProvider" />
+                <!--<ref bean="jettisonProvider" />-->
             </list>
         </constructor-arg>
     </bean>
