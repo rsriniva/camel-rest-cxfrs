@@ -42,6 +42,7 @@
         <constructor-arg>
             <list>
                 <bean class="org.codehaus.jackson.jaxrs.JacksonJsonProvider" />
+                <!--<bean class="org.apache.cxf.jaxrs.provider.json.JSONProvider" />-->
             </list>
         </constructor-arg>
     </bean>
