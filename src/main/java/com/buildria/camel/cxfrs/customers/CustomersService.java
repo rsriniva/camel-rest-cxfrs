@@ -11,11 +11,11 @@ import javax.ws.rs.core.MediaType;
  *
  * @author sogabe
  */
-@Path("/cs/")
+@Path("/cs")
 public class CustomersService {
 
     @GET
-    @Path("/customers/")
+    @Path("/")
     @Produces({MediaType.APPLICATION_JSON})
     public Customers getCustomers() {
         return null;
