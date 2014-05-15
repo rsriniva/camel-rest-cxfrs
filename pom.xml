@@ -96,7 +96,7 @@
             <groupId>org.codehaus.jackson</groupId>
             <artifactId>jackson-jaxrs</artifactId>
             <version>1.9.13</version>
-        </dependency>                        
+        </dependency>
     </dependencies>
 
     <build>
@@ -145,7 +145,14 @@
                     <scanIntervalSeconds>10</scanIntervalSeconds>
                 </configuration>
             </plugin>
-
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <configuration>
+                    <path>/${project.build.finalName}</path>
+                </configuration>              
+                <version>2.1</version>
+            </plugin>
         </plugins>
     </build>
 

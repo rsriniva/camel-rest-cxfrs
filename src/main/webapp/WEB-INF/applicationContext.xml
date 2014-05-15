@@ -1,28 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:cxf="http://camel.apache.org/schema/cxf"
-       xmlns:jaxrs="http://cxf.apache.org/jaxrs"
        xsi:schemaLocation="
-       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-       http://camel.apache.org/schema/cxf http://camel.apache.org/schema/cxf/camel-cxf.xsd
-       http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd
-       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd"
->
+            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd
+            http://camel.apache.org/schema/cxf http://camel.apache.org/schema/cxf/camel-cxf.xsd
+            http://cxf.apache.org/transports/http-jetty/configuration http://cxf.apache.org/schemas/configuration/http-jetty.xsd
+            http://cxf.apache.org/configuration/security http://cxf.apache.org/schemas/configuration/security.xsd">
 
-    <cxf:rsServer id="rsServer" 
-                  address="http://localhost:9999/cxfrs"
+    <cxf:rsServer xmlns:cxf="http://camel.apache.org/schema/cxf"
+                  id="rsServer"
+                  address="https://localhost:9999/cxfrs"
                   serviceClass="com.buildria.camel.cxfrs.customers.CustomersService" 
-                  loggingFeatureEnabled="false" 
+                  loggingFeatureEnabled="true" 
                   loggingSizeLimit="200" 
-                  skipFaultLogging="true"
-    >
+                  skipFaultLogging="true">
         <cxf:providers>
             <!--<ref bean="jacksonProvider" />-->
             <ref bean="jettisonProvider" />
         </cxf:providers>
     </cxf:rsServer>
     
+    <import resource="classpath:META-INF/cxf/cxf.xml"/>
+    
+    <httpj:engine-factory xmlns:sec="http://cxf.apache.org/configuration/security" 
+                          xmlns:httpj="http://cxf.apache.org/transports/http-jetty/configuration">
+        <httpj:engine port="9999">
+            <!-- SSL -->
+            <httpj:tlsServerParameters>
+                <!-- http://wiki.eclipse.org/Jetty/Howto/Configure_SSL -->
+                <sec:keyManagers keyPassword="osseai">
+                    <sec:keyStore type="JKS" password="osseai" resource="osseai.keystore"/>
+                </sec:keyManagers>
+                <sec:trustManagers>
+                    <sec:keyStore type="JKS" password="osseai" resource="osseai.keystore"/>
+                </sec:trustManagers>
+            </httpj:tlsServerParameters>
+            <!-- Thread pool -->
+            <httpj:threadingParameters minThreads="10" maxThreads="10" />
+        </httpj:engine>
+    </httpj:engine-factory>
+      
     <camelContext xmlns="http://camel.apache.org/schema/spring">
         <route>
             <from uri="cxfrs://bean://rsServer?bindingStyle=SimpleConsumer" />
