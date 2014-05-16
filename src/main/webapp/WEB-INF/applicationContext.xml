@@ -58,6 +58,9 @@
                 </when>
                 <otherwise>
                     <log message="No suitable process for $simple{headers.operationName}" />
+                    <setHeader headerName="CamelHttpResponseCode">
+                        <constant>404</constant>
+                    </setHeader>
                 </otherwise>
             </choice>
         </route>
