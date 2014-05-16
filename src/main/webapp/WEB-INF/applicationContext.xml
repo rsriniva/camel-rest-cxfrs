@@ -10,7 +10,7 @@
 
     <cxf:rsServer xmlns:cxf="http://camel.apache.org/schema/cxf"
                   id="rsServer"
-                  address="https://localhost:9999/cxfrs"
+                  address="http://localhost:9999/cxfrs"
                   serviceClass="com.buildria.camel.cxfrs.customers.CustomersService" 
                   loggingFeatureEnabled="true" 
                   loggingSizeLimit="200" 
@@ -25,7 +25,7 @@
     
     <httpj:engine-factory xmlns:sec="http://cxf.apache.org/configuration/security" 
                           xmlns:httpj="http://cxf.apache.org/transports/http-jetty/configuration">
-        <httpj:engine port="9999">
+        <httpj:engine port="9998">
             <!-- SSL -->
             <httpj:tlsServerParameters>
                 <!-- http://wiki.eclipse.org/Jetty/Howto/Configure_SSL -->
