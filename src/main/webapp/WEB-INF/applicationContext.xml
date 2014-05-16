@@ -50,11 +50,11 @@
             <choice>
                 <when>
                     <simple>$simple{headers.operationName} == 'getCustomer'</simple>
-                    <process ref="cutomerProcessor" />
+                    <bean ref="cutomersServiceImpl" method="getCustomer" />
                 </when>
                 <when>
                     <simple>$simple{headers.operationName} == 'getCustomers'</simple>
-                    <process ref="cutomersProcessor" />
+                    <bean ref="cutomersServiceImpl" method="getCustomers" />
                 </when>
                 <otherwise>
                     <log message="No suitable process for $simple{headers.operationName}" />
@@ -63,8 +63,7 @@
         </route>
     </camelContext>
     
-    <bean id="cutomerProcessor" class="com.buildria.camel.cxfrs.customers.CustomerProcessor" />
-    <bean id="cutomersProcessor" class="com.buildria.camel.cxfrs.customers.CustomersProcessor" />
+    <bean id="cutomersServiceImpl" class="com.buildria.camel.cxfrs.customers.CustomersServiceImpl" />
 
     <bean id="jacksonProvider" class="org.codehaus.jackson.jaxrs.JacksonJsonProvider" />
     <bean id="jettisonProvider" class="org.apache.cxf.jaxrs.provider.json.JSONProvider" />
