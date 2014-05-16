@@ -8,27 +8,41 @@
             http://cxf.apache.org/transports/http-jetty/configuration http://cxf.apache.org/schemas/configuration/http-jetty.xsd
             http://cxf.apache.org/configuration/security http://cxf.apache.org/schemas/configuration/security.xsd">
 
+    <!-- RESTのエンドポイントの設定 -->
     <cxf:rsServer xmlns:cxf="http://camel.apache.org/schema/cxf"
                   id="rsServer"
                   address="http://localhost:9999/cxfrs"
-                  serviceClass="com.buildria.camel.cxfrs.customers.CustomersService" 
                   loggingFeatureEnabled="true" 
                   loggingSizeLimit="200" 
                   skipFaultLogging="true">
+        <cxf:serviceBeans>
+            <!-- 提供するサービスクラス -->
+            <ref bean="cutomersService" />
+        </cxf:serviceBeans>
         <cxf:providers>
+            <!-- 使用するJSONの実装 指定しなければJettison -->
             <!--<ref bean="jacksonProvider" />-->
             <ref bean="jettisonProvider" />
         </cxf:providers>
     </cxf:rsServer>
     
+    <!-- RESTのインタフェース(実際はクラス) -->
+    <bean id="cutomersService" class="com.buildria.camel.cxfrs.customers.CustomersService" />
+
+    <!-- Jsonの実装 -->    
+    <bean id="jacksonProvider" class="org.codehaus.jackson.jaxrs.JacksonJsonProvider" />
+    <bean id="jettisonProvider" class="org.apache.cxf.jaxrs.provider.json.JSONProvider" />
+    
     <import resource="classpath:META-INF/cxf/cxf.xml"/>
     
+    <!-- Jettyの設定(ssl, thread poolなど) -->
     <httpj:engine-factory xmlns:sec="http://cxf.apache.org/configuration/security" 
                           xmlns:httpj="http://cxf.apache.org/transports/http-jetty/configuration">
-        <httpj:engine port="9998">
-            <!-- SSL -->
+        <!-- cxf:rsServerで指定したポート番号を合わせる -->
+        <httpj:engine port="9999">
+            <!-- SSL http://wiki.eclipse.org/Jetty/Howto/Configure_SSL -->
+            <!--
             <httpj:tlsServerParameters>
-                <!-- http://wiki.eclipse.org/Jetty/Howto/Configure_SSL -->
                 <sec:keyManagers keyPassword="osseai">
                     <sec:keyStore type="JKS" password="osseai" resource="osseai.keystore"/>
                 </sec:keyManagers>
@@ -36,6 +50,7 @@
                     <sec:keyStore type="JKS" password="osseai" resource="osseai.keystore"/>
                 </sec:trustManagers>
             </httpj:tlsServerParameters>
+            -->
             <!-- Thread pool -->
             <httpj:threadingParameters minThreads="10" maxThreads="10" />
         </httpj:engine>
@@ -66,11 +81,10 @@
         </route>
     </camelContext>
     
+    <!-- RESTの実装クラス -->
     <bean id="cutomersServiceImpl" class="com.buildria.camel.cxfrs.customers.CustomersServiceImpl" />
 
-    <bean id="jacksonProvider" class="org.codehaus.jackson.jaxrs.JacksonJsonProvider" />
-    <bean id="jettisonProvider" class="org.apache.cxf.jaxrs.provider.json.JSONProvider" />
-    
+    <!-- CamelのプロパティでJSONの実装を指定する場合に使用する -->
     <bean id="providers" class="java.util.ArrayList">
         <constructor-arg>
             <list>
