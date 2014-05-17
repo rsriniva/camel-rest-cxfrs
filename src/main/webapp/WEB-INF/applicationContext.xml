@@ -8,17 +8,30 @@
             http://cxf.apache.org/transports/http-jetty/configuration http://cxf.apache.org/schemas/configuration/http-jetty.xsd
             http://cxf.apache.org/configuration/security http://cxf.apache.org/schemas/configuration/security.xsd">
 
-    <!-- RESTのエンドポイントの設定 -->
+    <!-- cxf;rsServerとエンドポイントは1:1 -->
+    <!-- 複数のエンドポイントで共有できない -->
+    <!-- RESTのエンドポイントの設定 CusromersService -->
     <cxf:rsServer xmlns:cxf="http://camel.apache.org/schema/cxf"
-                  id="rsServer"
-                  address="http://localhost:9999/cxfrs"
+                  id="customers"
+                  address="http://localhost:9999/c"
                   loggingFeatureEnabled="true" 
                   loggingSizeLimit="200" 
                   skipFaultLogging="true">
-        <cxf:serviceBeans>
-            <!-- 提供するサービスクラス -->
-            <ref bean="cutomersService" />
-        </cxf:serviceBeans>
+        <cxf:providers>
+            <!-- 使用するJSONの実装 指定しなければJettison -->
+            <!--<ref bean="jacksonProvider" />-->
+            <ref bean="jacksonJaxbProvider" />
+            <!--<ref bean="jettisonProvider" />-->
+        </cxf:providers>
+    </cxf:rsServer>
+
+    <!-- RESTのエンドポイントの設定 EmployersService -->
+    <cxf:rsServer xmlns:cxf="http://camel.apache.org/schema/cxf"
+                  id="employers"
+                  address="http://localhost:9999/e"
+                  loggingFeatureEnabled="true" 
+                  loggingSizeLimit="200" 
+                  skipFaultLogging="true">
         <cxf:providers>
             <!-- 使用するJSONの実装 指定しなければJettison -->
             <!--<ref bean="jacksonProvider" />-->
@@ -27,9 +40,6 @@
         </cxf:providers>
     </cxf:rsServer>
     
-    <!-- RESTのインタフェース(実際はクラス) -->
-    <bean id="cutomersService" class="com.buildria.camel.cxfrs.customers.CustomersService" />
-
     <!-- Jsonの実装 -->    
     <bean id="jacksonProvider" class="org.codehaus.jackson.jaxrs.JacksonJsonProvider" />
     <bean id="jacksonJaxbProvider" class="org.codehaus.jackson.jaxrs.JacksonJaxbJsonProvider" />
@@ -59,8 +69,12 @@
     </httpj:engine-factory>
       
     <camelContext xmlns="http://camel.apache.org/schema/spring">
+
+        <endpoint id="customersEndpoint" uri="cxfrs://bean://customers?resourceClasses=com.buildria.camel.cxfrs.customers.CustomersService&amp;bindingStyle=SimpleConsumer" />
+        <endpoint id="employersEndpoint" uri="cxfrs://bean://employers?resourceClasses=com.buildria.camel.cxfrs.employers.EmployersService&amp;bindingStyle=SimpleConsumer" />
+        
         <route>
-            <from uri="cxfrs://bean://rsServer?bindingStyle=SimpleConsumer" />
+            <from ref="customersEndpoint" />
             <!--<from uri="cxfrs://bean://rsServer" />-->
             <log message="BODY: ${body}" />
             <log message="HEADERS: ${headers}" />
@@ -81,10 +95,34 @@
                 </otherwise>
             </choice>
         </route>
+
+        <route>
+            <from ref="employersEndpoint" />
+            <!--<from uri="cxfrs://bean://rsServer" />-->
+            <log message="BODY: ${body}" />
+            <log message="HEADERS: ${headers}" />
+            <choice>
+                <when>
+                    <simple>$simple{headers.operationName} == 'getEmployer'</simple>
+                    <bean ref="employersServiceImpl" method="getEmployer" />
+                </when>
+                <when>
+                    <simple>$simple{headers.operationName} == 'getEmployers'</simple>
+                    <bean ref="employersServiceImpl" method="getEmployers" />
+                </when>
+                <otherwise>
+                    <log message="No suitable process for $simple{headers.operationName}" />
+                    <setHeader headerName="CamelHttpResponseCode">
+                        <constant>404</constant>
+                    </setHeader>
+                </otherwise>
+            </choice>
+        </route>
     </camelContext>
     
     <!-- RESTの実装クラス -->
     <bean id="cutomersServiceImpl" class="com.buildria.camel.cxfrs.customers.CustomersServiceImpl" />
+    <bean id="employersServiceImpl" class="com.buildria.camel.cxfrs.employers.EmployersServiceImpl" />
 
     <!-- CamelのプロパティでJSONの実装を指定する場合に使用する -->
     <bean id="providers" class="java.util.ArrayList">
