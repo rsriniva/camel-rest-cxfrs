@@ -3,6 +3,7 @@ package com.buildria.camel.cxfrs.employers;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * Customer
@@ -36,7 +37,7 @@ public class Employer {
         this.id = id;
     }
 
-    @XmlElement(name = "name")
+    @XmlTransient
     public String getName() {
         return name;
     }
