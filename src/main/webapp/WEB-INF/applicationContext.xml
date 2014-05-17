@@ -22,7 +22,8 @@
         <cxf:providers>
             <!-- 使用するJSONの実装 指定しなければJettison -->
             <!--<ref bean="jacksonProvider" />-->
-            <ref bean="jettisonProvider" />
+            <ref bean="jacksonJaxbProvider" />
+            <!--<ref bean="jettisonProvider" />-->
         </cxf:providers>
     </cxf:rsServer>
     
@@ -31,6 +32,7 @@
 
     <!-- Jsonの実装 -->    
     <bean id="jacksonProvider" class="org.codehaus.jackson.jaxrs.JacksonJsonProvider" />
+    <bean id="jacksonJaxbProvider" class="org.codehaus.jackson.jaxrs.JacksonJaxbJsonProvider" />
     <bean id="jettisonProvider" class="org.apache.cxf.jaxrs.provider.json.JSONProvider" />
     
     <import resource="classpath:META-INF/cxf/cxf.xml"/>
@@ -88,7 +90,8 @@
     <bean id="providers" class="java.util.ArrayList">
         <constructor-arg>
             <list>
-                <ref bean="jacksonProvider" />
+                <!--<ref bean="jacksonProvider" />-->
+                <ref bean="jacksonJaxbProvider" />
                 <!--<ref bean="jettisonProvider" />-->
             </list>
         </constructor-arg>
